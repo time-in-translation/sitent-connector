@@ -4,18 +4,17 @@ import csv
 
 from models import Annotation
 from sitent import create_sitent_input, call_sitent, read_sitent
-from utils import unicode_csv_reader
 
 
 def import_csv(filename):
     result = []
 
-    with codecs.open(filename, 'rb', 'utf-8') as f:
+    with codecs.open(filename, 'r', 'utf-8') as f:
         word_columns = []
         index_columns = []
         sentence_column = 0
 
-        reader = unicode_csv_reader(f, delimiter=';')
+        reader = csv.reader(f, delimiter=';')
         for i, row in enumerate(reader):
             if i == 0:  # header row
                 for j, r in enumerate(row):
@@ -35,10 +34,10 @@ def import_csv(filename):
     return result
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Retrieve annotation from sitent')
-    parser.add_argument('file_in', type=str, help='Input file')
-    parser.add_argument('file_out', type=str, help='Output file')
+    parser.add_argument('file_in', help='Input file')
+    parser.add_argument('file_out', help='Output file')
     args = parser.parse_args()
 
     annotations = import_csv(args.file_in)
